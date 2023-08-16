@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 class TaskManager {
-    private HashMap<Integer, Task> tasks;
+    private final HashMap<Integer, Task> tasks;
 
     public TaskManager() {
         tasks = new HashMap<>();

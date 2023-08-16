@@ -1,10 +1,7 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-
-class Task {
-    private String name;
-    private String description;
-    private int id;
+public class Task {
+    private final String name;
+    private final String description;
+    private final int id;
     private String status;
 
     public Task(String name, String description, int id, String status) {
