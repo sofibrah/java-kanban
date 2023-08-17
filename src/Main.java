@@ -3,15 +3,15 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        Task task1 = new Task("Task 1", "Description 1", 1, "NEW");
-        Task task2 = new Task("Task 2", "Description 2", 2, "NEW");
+        Task task1 = new Task(1, "Task 1", "Description 1", 1, "NEW");
+        Task task2 = new Task(2, "Task 2", "Description 2", 2, "NEW");
 
-        Epic epic1 = new Epic("Epic 1", "Epic Description 1", 3, "NEW");
-        Epic epic2 = new Epic("Epic 2", "Epic Description 2", 4, "NEW");
+        Epic epic1 = new Epic(3, "Epic 1", "Epic Description 1", 3, "NEW");
+        Epic epic2 = new Epic(4, "Epic 2", "Epic Description 2", 4, "NEW");
 
-        Subtask subtask11 = new Subtask("Subtask 11", "Subtask Description 11", 5, "NEW", epic1.getId());
-        Subtask subtask12 = new Subtask("Subtask 12", "Subtask Description 12", 6, "NEW", epic1.getId());
-        Subtask subtask21 = new Subtask("Subtask 21", "Subtask Description 21", 7, "NEW", epic2.getId());
+        Subtask subtask11 = new Subtask(5, "Subtask 11", "Subtask Description 11", 5, "NEW", epic1.getId());
+        Subtask subtask12 = new Subtask(6, "Subtask 12", "Subtask Description 12", 6, "NEW", epic1.getId());
+        Subtask subtask21 = new Subtask(7, "Subtask 21", "Subtask Description 21", 7, "NEW", epic2.getId());
 
         epic1.addSubtask(subtask11);
         epic1.addSubtask(subtask12);
@@ -20,8 +20,11 @@ public class Main {
         TaskManager taskManager = new TaskManager();
         taskManager.createTask(task1);
         taskManager.createTask(task2);
-        taskManager.createTask(epic1);
-        taskManager.createTask(epic2);
+        taskManager.createEpic(epic1);
+        taskManager.createEpic(epic2);
+        taskManager.createSubtask(subtask11);
+        taskManager.createSubtask(subtask12);
+        taskManager.createSubtask(subtask21);
 
         System.out.println("All tasks:");
         ArrayList<Task> allTasks = taskManager.getAllTasks();
@@ -29,9 +32,15 @@ public class Main {
             System.out.println(task.getId() + ": " + task.getName() + " - " + task.getDescription() + " - " + task.getStatus());
         }
 
-        System.out.println("Subtasks of Epic 1:");
-        ArrayList<Task> subtasks = taskManager.getSubtasksByEpic(epic1);
-        for (Task subtask : subtasks) {
+        System.out.println("All epics:");
+        ArrayList<Epic> allEpics = taskManager.getAllEpics();
+        for (Epic epic : allEpics) {
+            System.out.println(epic.getId() + ": " + epic.getName() + " - " + epic.getDescription() + " - " + epic.getStatus());
+        }
+
+        System.out.println("All subtasks:");
+        ArrayList<Subtask> allSubtasks = taskManager.getAllSubtasks();
+        for (Subtask subtask : allSubtasks) {
             System.out.println(subtask.getId() + ": " + subtask.getName() + " - " + subtask.getDescription() + " - " + subtask.getStatus());
         }
 
