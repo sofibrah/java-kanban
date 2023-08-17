@@ -13,10 +13,12 @@ public class TaskManager {
     }
 
     public ArrayList<Task> getAllTasks() {
+
         return new ArrayList<>(tasks.values());
     }
 
     public ArrayList<Epic> getAllEpics() {
+
         return new ArrayList<>(epics.values());
     }
 
