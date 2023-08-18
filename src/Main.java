@@ -1,68 +1,46 @@
-import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
-
     public static void main(String[] args) {
-        Task task1 = new Task(1, "Task 1", "Description 1", 1, "NEW");
-        Task task2 = new Task(2, "Task 2", "Description 2", 2, "NEW");
+        TaskManager taskManager = Manager.getDefault();
+        HistoryManager historyManager = Manager.getDefaultHistory();
 
-        Epic epic1 = new Epic(3, "Epic 1", "Epic Description 1", 3, "NEW");
-        Epic epic2 = new Epic(4, "Epic 2", "Epic Description 2", 4, "NEW");
-
-        Subtask subtask11 = new Subtask(5, "Subtask 11", "Subtask Description 11", 5, "NEW", epic1.getId());
-        Subtask subtask12 = new Subtask(6, "Subtask 12", "Subtask Description 12", 6, "NEW", epic1.getId());
-        Subtask subtask21 = new Subtask(7, "Subtask 21", "Subtask Description 21", 7, "NEW", epic2.getId());
-
-        epic1.addSubtask(subtask11);
-        epic1.addSubtask(subtask12);
-        epic2.addSubtask(subtask21);
-
-        TaskManager taskManager = new TaskManager();
+        Task task1 = new Task(1, "Task 1", "ДР у Дарьи", 3, Status.NEW);
         taskManager.createTask(task1);
-        taskManager.createTask(task2);
+        historyManager.add(task1);
+
+        Epic epic1 = new Epic(1,"Epic 1","Организация вечеринки",3,Status.NEW);
         taskManager.createEpic(epic1);
-        taskManager.createEpic(epic2);
-        taskManager.createSubtask(subtask11);
-        taskManager.createSubtask(subtask12);
-        taskManager.createSubtask(subtask21);
+        historyManager.add(epic1);
 
-        System.out.println("All tasks:");
-        ArrayList<Task> allTasks = taskManager.getAllTasks();
-        for (Task task : allTasks) {
-            System.out.println(task.getId() + ": " + task.getName() + " - " + task.getDescription() + " - " + task.getStatus());
-        }
+        Subtask subtask1 = new Subtask(1,"Subtask 1", "составить список гостей", 1, Status.NEW, epic1.getId());
+        taskManager.createSubtask(subtask1);
+        historyManager.add(subtask1);
+        Subtask subtask2 = new Subtask(2, "Subtask 2", "купить свечи для торта", 1, Status.NEW, epic1.getId());
+        taskManager.createSubtask(subtask2);
+        historyManager.add(subtask2);
+        Subtask subtask3 = new Subtask(3, "Subtask 3", "заказать пиццу", 2, Status.NEW, epic1.getId());
+        taskManager.createTask(subtask3);
+        historyManager.add(subtask3);
 
-        System.out.println("All epics:");
-        ArrayList<Epic> allEpics = taskManager.getAllEpics();
-        for (Epic epic : allEpics) {
-            System.out.println(epic.getId() + ": " + epic.getName() + " - " + epic.getDescription() + " - " + epic.getStatus());
-        }
+        subtask1.setStatus(Status.IN_PROGRESS);
+        taskManager.updateTask(subtask1);
 
-        System.out.println("All subtasks:");
-        ArrayList<Subtask> allSubtasks = taskManager.getAllSubtasks();
-        for (Subtask subtask : allSubtasks) {
-            System.out.println(subtask.getId() + ": " + subtask.getName() + " - " + subtask.getDescription() + " - " + subtask.getStatus());
-        }
+        subtask2.setStatus(Status.DONE);
+        taskManager.updateTask(subtask2);
 
-        task1.setStatus("IN_PROGRESS");
-        task2.setStatus("DONE");
-        subtask11.setStatus("DONE");
-        subtask12.setStatus("DONE");
+        taskManager.removeTaskById(subtask3.getId());
 
-        System.out.println("Updated tasks:");
-        allTasks = taskManager.getAllTasks();
-        for (Task task : allTasks) {
-            System.out.println(task.getId() + ": " + task.getName() + " - " + task.getDescription() + " - " + task.getStatus());
-        }
+        List<Task> history = historyManager.getHistory();
+            System.out.println("History of Viewed Tasks:");
+            for (Task task : history) {
+                System.out.println("Task ID: " + task.getId());
+                System.out.println("Name: " + task.getName());
+                System.out.println("Description: " + task.getDescription());
+                System.out.println("Priority: " + task.getPriority());
+                System.out.println("Status: " + task.getStatus());
 
-        taskManager.removeTaskById(6);
-        taskManager.removeTaskById(4);
-
-        System.out.println("Remaining tasks:");
-        allTasks = taskManager.getAllTasks();
-        for (Task task : allTasks) {
-            System.out.println(task.getId() + ": " + task.getName() + " - " + task.getDescription() + " - " + task.getStatus());
+            }
         }
     }
-}
 
