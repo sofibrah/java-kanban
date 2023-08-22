@@ -78,7 +78,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     public void removeTaskById(int id) {
         if (tasks.containsKey(id)) {
+            Task removedTask = tasks.get(id);
             tasks.remove(id);
+            historyManager.remove(removedTask);
             System.out.println("Task removed: " + id);
         } else {
             System.out.println("Task not found: " + id);

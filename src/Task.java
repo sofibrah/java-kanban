@@ -4,6 +4,7 @@ public class Task {
     private final String description;
     private final int priority;
     private Status status;
+    private Epic epic; // Добавляем поле для хранения связанного эпика
 
     public Task(int id, String name, String description, int priority, Status status) {
         this.id = id;
@@ -35,5 +36,13 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Epic getEpic() {
+        return epic;
+    }
+
+    public void setEpic(Epic epic) {
+        this.epic = epic;
     }
 }
