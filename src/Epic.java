@@ -17,3 +17,9 @@ class Epic extends Task {
     }
 }
 
+/*тут тоже две ошибки выдает
+Method 'addSubtask(Subtask)' is never used
+и
+Method 'getSubtasks()' is never used
+не знаю на сколько это критично
+ */

@@ -50,7 +50,7 @@ public class Main {
         System.out.println("\nHistory after removing epic 4:");
         printHistory(historyManager.getHistory());
     }
-
+//что-то не так при выводе информации, но я не понимаю как это поправить, чтобы при удалении задачи она не печаталсь
 
     private static void printHistory(List<Task> history) {
         for (Task task : history) {
