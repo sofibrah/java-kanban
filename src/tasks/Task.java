@@ -1,3 +1,6 @@
+package tasks;
+import status.*;
+
 public class Task {
     private final int id;
     private final String name;

@@ -1,3 +1,7 @@
+package managers;
+
+import tasks.Task;
+import datastructures.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +44,18 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         return historyList;
+    }
+
+    public List<Task> getTasks() {
+        List<Task> taskList = new ArrayList<>();
+
+        Node<Task> currNode = head;
+        while (currNode != null) {
+            taskList.add(currNode.getData());
+            currNode = currNode.getNext();
+        }
+
+        return taskList;
     }
 
     private void linkLast(Task task) {
