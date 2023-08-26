@@ -1,11 +1,7 @@
 package managers;
-
-import managers.HistoryManager;
-import managers.InMemoryHistoryManager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,7 +17,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
         tasks = new HashMap<>();
         epics = new HashMap<>();
         subtasks = new HashMap<>();
-        historyManager = new InMemoryHistoryManager();
+        historyManager =Manager.getDefaultHistory();
     }
 
     public ArrayList<Task> getAllTasks() {

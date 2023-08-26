@@ -1,9 +1,11 @@
 package tasks;
 import status.*;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class Epic extends Task {
-    private final ArrayList<Subtask> subtasks;
+    private final List<Subtask> subtasks;
 
     public Epic(int id, String name, String description, int priority, Status status) {
         super(id, name, description, priority, status);
@@ -14,14 +16,10 @@ public class Epic extends Task {
         subtasks.add(subtask);
     }
 
-    public ArrayList<Subtask> getSubtasks() {
+    public List<Subtask> getSubtasks() {
         return subtasks;
     }
 }
 
-/*тут тоже две ошибки выдает
-Method 'addSubtask(Subtask)' is never used
-и
-Method 'getSubtasks()' is never used
-не знаю на сколько это критично
- */
+
+

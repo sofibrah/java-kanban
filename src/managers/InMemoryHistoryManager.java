@@ -1,92 +1,56 @@
 package managers;
 
 import tasks.Task;
-import datastructures.Node;
+import datastructures.CustomLinkedList;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private Node<Task> head;
-    private Node<Task> tail;
-    private final HashMap<Integer, Node<Task>> taskMap;
+    private final CustomLinkedList<Task> history;
+    private final Map<Integer, CustomLinkedList.Node<Task>> taskNodes;
+    private static final int MAX_HISTORY_SIZE = 10;
 
     public InMemoryHistoryManager() {
-        taskMap = new HashMap<>();
+        history = new CustomLinkedList<>();
+        taskNodes = new HashMap<>();
     }
 
+    @Override
     public void add(Task task) {
-        int taskId = task.getId();
-        Node<Task> node = taskMap.get(taskId);
-
+        CustomLinkedList.Node<Task> node = taskNodes.get(task.getId());
         if (node != null) {
-            remove(node);
+            history.remove(node);
         }
+        CustomLinkedList.Node<Task> newNode = new CustomLinkedList.Node<>(task);
+        history.add(newNode);
+        taskNodes.put(task.getId(), newNode);
 
-        linkLast(task);
+        while (history.getSize() > MAX_HISTORY_SIZE) {
+            CustomLinkedList.Node<Task> headNode = history.getHead();
+            history.remove(headNode);
+            taskNodes.remove(headNode.getData().getId());
+        }
     }
 
+    @Override
     public void remove(Task task) {
-        Node<Task> node = taskMap.get(task.getId());
-
+        CustomLinkedList.Node<Task> node = taskNodes.get(task.getId());
         if (node != null) {
-            remove(node);
+            history.remove(node);
+            taskNodes.remove(task.getId());
         }
     }
 
+    @Override
     public List<Task> getHistory() {
-        List<Task> historyList = new ArrayList<>();
-
-        Node<Task> currNode = head;
-        while (currNode != null) {
-            historyList.add(currNode.getData());
-            currNode = currNode.getNext();
+        List<Task> taskHistory = new ArrayList<>();
+        CustomLinkedList.Node<Task> node = history.getTail();
+        while (node != null) {
+            taskHistory.add(node.getData());
+            node = node.prev;
         }
-
-        return historyList;
-    }
-
-    public List<Task> getTasks() {
-        List<Task> taskList = new ArrayList<>();
-
-        Node<Task> currNode = head;
-        while (currNode != null) {
-            taskList.add(currNode.getData());
-            currNode = currNode.getNext();
-        }
-
-        return taskList;
-    }
-
-    private void linkLast(Task task) {
-        Node<Task> newNode = new Node<>(task);
-        newNode.setPrev(tail);
-
-        if (head == null) {
-            head = newNode;
-        } else {
-            tail.setNext(newNode);
-        }
-
-        tail = newNode;
-        taskMap.put(task.getId(), newNode);
-    }
-
-    private void remove(Node<Task> node) {
-        if (node == head) {
-            head = head.getNext();
-        } else if (node == tail) {
-            tail = tail.getPrev();
-        }
-
-        if (node.getPrev() != null) {
-            node.getPrev().setNext(node.getNext());
-        }
-
-        if (node.getNext() != null) {
-            node.getNext().setPrev(node.getPrev());
-        }
-
-        taskMap.remove(node.getData().getId());
+        return taskHistory;
     }
 }
