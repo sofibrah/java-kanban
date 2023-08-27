@@ -1,56 +1,76 @@
 package managers;
 
 import tasks.Task;
-import datastructures.CustomLinkedList;
+import datastructures.Node;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final CustomLinkedList<Task> history;
-    private final Map<Integer, CustomLinkedList.Node<Task>> taskNodes;
-    private static final int MAX_HISTORY_SIZE = 10;
+    private Node<Task> head;
+    private Node<Task> tail;
 
-    public InMemoryHistoryManager() {
-        history = new CustomLinkedList<>();
-        taskNodes = new HashMap<>();
-    }
 
     @Override
     public void add(Task task) {
-        CustomLinkedList.Node<Task> node = taskNodes.get(task.getId());
+        Node<Task> node = getNodeByTask(task);
         if (node != null) {
-            history.remove(node);
+            remove(node);
         }
-        CustomLinkedList.Node<Task> newNode = new CustomLinkedList.Node<>(task);
-        history.add(newNode);
-        taskNodes.put(task.getId(), newNode);
-
-        while (history.getSize() > MAX_HISTORY_SIZE) {
-            CustomLinkedList.Node<Task> headNode = history.getHead();
-            history.remove(headNode);
-            taskNodes.remove(headNode.getData().getId());
-        }
+        Node<Task> newNode = new Node<>(task);
+        add(newNode);
     }
 
     @Override
     public void remove(Task task) {
-        CustomLinkedList.Node<Task> node = taskNodes.get(task.getId());
+        Node<Task> node = getNodeByTask(task);
         if (node != null) {
-            history.remove(node);
-            taskNodes.remove(task.getId());
+            remove(node);
         }
     }
 
     @Override
     public List<Task> getHistory() {
         List<Task> taskHistory = new ArrayList<>();
-        CustomLinkedList.Node<Task> node = history.getTail();
-        while (node != null) {
-            taskHistory.add(node.getData());
-            node = node.prev;
+        Node<Task> current = tail;
+        while (current != null) {
+            taskHistory.add(current.getData());
+            current = current.prev;
         }
         return taskHistory;
+    }
+
+    private void add(Node<Task> node) {
+        if (head == null) {
+            head = node;
+        } else {
+            tail.next = node;
+            node.prev = tail;
+        }
+        tail = node;
+
+    }
+
+    private void remove(Node<Task> node) {
+        if (node.prev != null) {
+            node.prev.next = node.next;
+        } else {
+            head = node.next;
+        }
+        if (node.next != null) {
+            node.next.prev = node.prev;
+        } else {
+            tail = node.prev;
+        }
+    }
+
+    private Node<Task> getNodeByTask(Task task) {
+        Node<Task> current = head;
+        while (current != null) {
+            if (current.getData().equals(task)) {
+                return current;
+            }
+            current = current.next;
+        }
+        return null;
     }
 }
