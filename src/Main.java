@@ -24,10 +24,12 @@ public class Main {
         taskManager.createSubtask(subtask1);
         historyManager.add(subtask1);
         epic1.addSubtask(subtask1);
+
         Subtask subtask2 = new Subtask(2, "Subtask 2", "купить свечи для торта", 1, Status.NEW, epic1.getId());
         taskManager.createSubtask(subtask2);
         historyManager.add(subtask2);
         epic1.addSubtask(subtask2);
+
         Subtask subtask3 = new Subtask(3, "Subtask 3", "заказать пиццу", 2, Status.NEW, epic1.getId());
         taskManager.createSubtask(subtask3);
         historyManager.add(subtask3);
@@ -40,7 +42,7 @@ public class Main {
 
         taskManager.removeTaskById(subtask3.getId());
         System.out.println("\nHistory after removing subtask3");
-        printHistory(historyManager.getHistory());
+        printHistory(historyManager.getHistory(), taskManager);
 
 
         Task task2 = new Task(2, "Task 2", "Переезд", 2, Status.IN_PROGRESS);
@@ -54,15 +56,39 @@ public class Main {
         taskManager.createTask(subtask4);
         historyManager.add(subtask4);
         epic4.addSubtask(subtask4);
+        epic4.cancel();
         taskManager.removeTaskById(epic4.getId());
         System.out.println("\nHistory after removing epic 4:");
-        printHistory(historyManager.getHistory());
+        printHistory(historyManager.getHistory(),taskManager);
     }
 
 
-    private static void printHistory(List<Task> history) {
+    private static void printHistory(List<Task> history, TaskManager taskManager) {
         for (Task task : history) {
             if (task.getStatus() != Status.CANCELLED) {
+                if (task instanceof Subtask) {
+                    Subtask subtask = (Subtask) task;
+                    int epicId = subtask.getEpicId();
+                    if (epicId != 0) {
+                        Task parentTask = taskManager.getTaskById(epicId);
+                        if (parentTask != null && (parentTask.getStatus() == Status.DONE || parentTask.getStatus() == Status.CANCELLED)) {
+                            continue;
+                        }
+                    }
+                } else if (task instanceof Epic) {
+                    Epic epic = (Epic) task;
+                    boolean allSubtasksCancelled = true;
+                    for (Subtask subtask : epic.getSubtasks()) {
+                        if (subtask.getStatus() != Status.CANCELLED) {
+                            allSubtasksCancelled = false;
+                            break;
+                        }
+                    }
+                    if (allSubtasksCancelled) {
+                        continue;
+                    }
+                }
+
                 System.out.println("Task ID: " + task.getId());
                 System.out.println("Name: " + task.getName());
                 System.out.println("Description: " + task.getDescription());
