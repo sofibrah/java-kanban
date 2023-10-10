@@ -2,6 +2,8 @@ package managers;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
+
+import java.io.IOException;
 import java.util.List;
 
 public interface TaskManager {
@@ -19,4 +21,6 @@ public interface TaskManager {
     Epic getEpicById(int id);
     Subtask getSubtaskById(int id);
 
+    void save() throws ManagerSaveException, IOException;
 }
+

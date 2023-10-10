@@ -4,9 +4,18 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Manager {
     public static TaskManager getDefault() {
-        return new CustomInMemoryTaskManager();
+        return new CustomInMemoryTaskManager() {
+            @Override
+            public void save() throws ManagerSaveException, IOException {
+
+            }
+        };
     }
 
     public static HistoryManager getDefaultHistory() {
@@ -14,7 +23,8 @@ public class Manager {
     }
 }
 
-class CustomInMemoryTaskManager extends InMemoryTaskManager{
+
+abstract class CustomInMemoryTaskManager extends InMemoryTaskManager {
     @Override
     public void createTask(Task task) {
         super.createTask(task);

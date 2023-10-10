@@ -1,0 +1,12 @@
+1,Subtask 1,составить список гостей,1,IN_PROGRESS
+2,Task 2,Переезд,2,IN_PROGRESS
+1,Epic 1,Организация вечеринки,3,NEW
+4,Epic 4,отправка вещей через сдэк,4,CANCELLED
+1,Subtask 1,составить список гостей,1,IN_PROGRESS
+2,Subtask 2,купить свечи для торта,1,DONE
+3,Subtask 3,заказать пиццу,2,NEW
+4,Subtask 4,попросить коробки в каком-нибудь магазине,2,CANCELLED
+1,Subtask 1,составить список гостей,1,IN_PROGRESS
+2,Task 2,Переезд,2,IN_PROGRESS
+3,Subtask 3,заказать пиццу,2,NEW
+4,Subtask 4,попросить коробки в каком-нибудь магазине,2,CANCELLED

@@ -9,9 +9,9 @@ import java.util.HashMap;
 
 public abstract class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks;
-    private final HashMap<Integer, Epic> epics;
-    private final HashMap<Integer, Subtask> subtasks;
-    private final HistoryManager historyManager;
+    protected final HashMap<Integer, Epic> epics;
+    protected final HashMap<Integer, Subtask> subtasks;
+    protected final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
@@ -79,6 +79,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
             System.out.println("Task not found: " + task.getId());
         }
     }
+
 
     public void removeTaskById(int id) {
         if (tasks.containsKey(id)) {
