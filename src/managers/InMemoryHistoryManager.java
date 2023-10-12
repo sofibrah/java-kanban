@@ -2,6 +2,7 @@ package managers;
 
 import tasks.Task;
 import datastructures.Node;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +13,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node<Task> tail;
     private final Map<Integer, Task> viewedTasks;
 
-    public InMemoryHistoryManager(){
+    public InMemoryHistoryManager() {
         this.head = null;
         this.tail = null;
         this.viewedTasks = new HashMap<>();
     }
+
     @Override
     public void add(Task task) {
         Node<Task> node = getNodeByTask(task);
@@ -39,7 +41,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-       return new ArrayList<>(viewedTasks.values());
+        return new ArrayList<>(viewedTasks.values());
     }
 
     private void add(Node<Task> node) {

@@ -1,4 +1,5 @@
 package tasks;
+
 import status.*;
 
 public class Task {
@@ -42,7 +43,7 @@ public class Task {
         this.status = status;
     }
 
-    public void cancel(){
+    public void cancel() {
         setStatus(Status.CANCELLED);
     }
 }
